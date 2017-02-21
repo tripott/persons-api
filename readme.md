@@ -3,7 +3,7 @@
 ## Getting started
 
   ```
-  $ git clone <some github url>
+  $ git clone https://github.com/tripott/persons-api.git
   $ cd persons-api
   $ npm install
   $ npm start
