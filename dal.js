@@ -13,12 +13,13 @@ function getPerson(id, cb) {
   })
 }
 
-function getPersons(cb) {
+function getPersons(options, cb) {
     db.allDocs({
-        include_docs: true,
-        start_key: "person_",
-        end_key: "person_\uffff"
-    }, function(err, docs) {
+          include_docs: true,
+          start_key: "person_",
+          end_key: "person_\uffff",
+          limit: options.limit
+      }, function(err, docs) {
         if (err) return cb(err)
         cb(null, map(data => data.doc, docs.rows))
     })
@@ -27,37 +28,19 @@ function getPersons(cb) {
 
 function addPerson(doc, cb) {
   // check for required properties within the doc
-  if (checkPersonRequiredValues(doc)) {
-
-    db.put(prepNewPerson(doc), function (err, res) {
+  checkPersonRequiredValues(doc) ? db.put(prepNewPerson(doc), function (err, res) {
       if (err) return cb(err)
       cb(null, res)
-    })
-
-  } else {
-
-      return cb({
+    }) : cb({
        error: "bad_request",
        reason: "Bad Request",
        name: "bad_request",
        status: 400,
        message: "Adding a person requires a firstName, lastName, and email."
       })
-  }
-
- //  {
- //  "firstName": "Jan",
- //  "lastName": "Scott",
- //  "email": "jan_scott@us.sc.gov"
- // }
-  //prop('x', {x: 100}); //=> 100
-
-
 }
 
 function updatePerson(doc, cb) {
-     console.log(prepNewPerson(doc))
-
 
   db.put(doc, function (err, res) {
     if (err) return cb(err)

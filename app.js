@@ -21,6 +21,9 @@ app.post('/persons', function(req, res, next) {
 })
 
 app.get('/persons/:id', function(req, res, next) {
+
+
+
     getPerson(req.params.id, function(err, person) {
         if (err) return next(new HTTPError(err.status, err.message, err))
         res.status(200).send(person)
@@ -29,7 +32,10 @@ app.get('/persons/:id', function(req, res, next) {
 
 
 app.get('/persons', function(req, res) {
-    getPersons(function(err, docs) {
+
+    const options = {limit: req.query.limit}
+
+    getPersons(options, function(err, docs) {
         if (err) return res.send(err)
         res.send(docs)
     })
