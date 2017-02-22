@@ -57,3 +57,65 @@ Error Response:
 ```
 $ curl -X GET http://<whatever>/persons/person_maddux_greg_maddog95@yahoo.com
 ```
+
+
+### `POST /persons`
+
+Adds a person to the database.
+
+#### Parameters
+
+None
+
+#### Body
+
+Provide a person JSON object in the request body:
+
+```
+{
+  "_id": "person_scott_greg_gscott@yahoo.com",
+  "firstName": "Greg",
+  "lastName": "Scott",
+  "email": "gscott@yahoo.com",
+  "type": "person"
+}
+```
+
+#### Example call
+
+```
+POST /persons
+
+{
+  "_id": "person_smith_jennifer_jensmith@yahoo.com",
+  "firstName": "Jennifer",
+  "lastName": "Smith",
+  "email": "jensmith@yahoo.com",
+  "type": "person"
+}
+```
+
+Example Response:
+
+```
+{
+  "ok": true,
+  "id": "person_smith_jennifer_jensmith@yahoo.com",
+  "rev": "1-cf72609b8bdf793577091ff5dbf2f349"
+}
+```
+
+#### Common Errors
+
+##### `412` - `missing_id`
+
+You attempted to add a person without providing an `_id` property within the JSON request body.
+
+```
+{
+  "status": 412,
+  "name": "missing_id",
+  "message": "_id is required for puts",
+  "error": true
+}
+```
